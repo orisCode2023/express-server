@@ -31,7 +31,7 @@ app.get("/briefing", async (req, res, next) => {
 async function findId(id) {
     try {
         const target = JSON.parse(await fs.readFile(TARGET_PATH, 'utf-8'))
-        return target.filter(tar => tar.id === id)
+        return target.find(tar => tar.id === id)
     } catch (err) {
         console.log("not found")
     }
@@ -41,6 +41,24 @@ app.get("/targets/:id", async (req, res) => {
     const { id } = req.params
     const data = await findId(parseInt(id))
     res.status(200).json(data)
+})
+async function findByQuery(key, value) {
+    const target = JSON.parse(await fs.readFile(TARGET_PATH, 'utf-8'))
+    return target.filter(obj => obj[key] === value)
+}
+
+// console.log(findByQuery("region", "north"))
+app.get("/targets", async (req, res) => {
+    const query = req.query
+    let data;
+    const queries = Object.entries(query)
+    for (let i = 0; i < queries.length; i++) {
+        const queryParams = queries[i];
+        data = await findByQuery(queryParams[0], queryParams[1])
+        if (data.length) return res.status(200).json({ status: "ok", data: data })
+    }
+    res.status(500).json({ msg: "not found" })
+
 })
 
 app.listen(PORT, () => {
