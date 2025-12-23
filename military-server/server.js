@@ -47,7 +47,6 @@ async function findByQuery(key, value) {
     return target.filter(obj => obj[key] === value)
 }
 
-// console.log(findByQuery("region", "north"))
 app.get("/targets", async (req, res) => {
     const query = req.query
     let data;
@@ -60,6 +59,7 @@ app.get("/targets", async (req, res) => {
     res.status(500).json({ msg: "not found" })
 
 })
+     
 
 app.listen(PORT, () => {
     console.log(`Server ruinnig on port ${PORT}`)
