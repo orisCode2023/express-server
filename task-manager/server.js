@@ -80,17 +80,40 @@ app.post('/tasks', async (req, res) => {
 app.put("/tasksUp/:id", async (req, res) => {
     const intId = parseInt(req.params.id)
     let taskToUpdate = TASK_DATA.find(task => task.id === intId)
-    taskToUpdate = {
-        title: req.body.title || taskToUpdate.title,
-        completed: req.body.completed || taskToUpdate.completed,
-        priority: req.body.priority || taskToUpdate.priority
-    }
+    // taskToUpdate = {
+    //     title: req.body.title || taskToUpdate.title,
+    //     completed: req.body.completed || taskToUpdate.completed,
+    //     priority: req.body.priority || taskToUpdate.priority
+    // }
+    Object.assign(taskToUpdate, req.body)
     await writeTasks(PATH, TASK_DATA)
     res.status(200).json({msg:"user update succefully", data: taskToUpdate})
 })
 
 
-// TODO: 7. PATCH /tasks/:id/toggle - שינוי סטטוס completed
+app.patch("/tasks1/:id/toggle", async (req, res) => {
+  const intId = parseInt(req.params.id)
+  if (isNaN(id))res.status(400).json({ msg: "Invalid task id" })
+  const taskToUpdate = TASK_DATA.find(task => task.id === id)
+  if (!taskToUpdate) res.status(404).json({ error: "Task not found" })
+  taskToUpdate.completed = !taskToUpdate.completed
+  await writeTasks(PATH, TASK_DATA)
+  res.status(200).json({msg: "update success", date: taskToUpdate})
+})
+
+app.patch("/tasks2/:id", async (req, res) => {
+  const intId = parseInt(req.params.id)
+  const updates = req.body
+  const task = TASK_DATA.find(t => t.id === id)
+  if (!task) return res.status(404).json({ error: "Task not found" })
+
+  
+  if (updates.title !== undefined) task.title = updates.title
+  if (updates.completed !== undefined) task.completed = updates.completed
+
+  await writeTasks(PATH, TASK_DATA)
+  res.status(200).json(task)
+})
 
 
 app.delete("/tasksD/:id", async (req, res) => {
