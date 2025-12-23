@@ -66,7 +66,7 @@ app.post('/users', async (req, res) => {
     }
     USERS_DATA.push(newUser) 
     await writeJson(PATH, USERS_DATA)
-    res.status(201).json({msg: "new user was created succefully", data: req.body})
+    res.status(201).json({msg: "new user was created succefully", data: newUser})
 })
 
 
