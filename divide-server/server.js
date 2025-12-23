@@ -2,6 +2,7 @@ import express from "express";
 import path from "path";
 import todos from "./routes/todos.js"
 import exampleHeaders from "./routes/example-headers.js"
+import dotenv from 'dotenv';
 
 
 
@@ -13,7 +14,8 @@ const TODOS_PATH = path.join(__dirname, "data", "todos.json");
 
 
 // =================== MIDDLEWARES ===================
-
+dotenv.config({path: ".env"})
+console.log(process.env.PORT)
 // Body parser
 app.use(express.json());
 
