@@ -34,6 +34,11 @@ app.get("/", async (req, res) => {
 app.use ('/todos', todos)
 app.use ('/headers-example', exampleHeaders)
 
+
+app.get((req, res) =>{
+    res.status(404).json({success: false, msg:"path dosen't exist "})
+})
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}...`);
 });
