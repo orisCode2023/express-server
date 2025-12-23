@@ -1,15 +1,15 @@
 [
   {
     "id": 1,
-    "name": "David",
-    "age": 25,
+    "name": "David Cohen",
+    "age": 26,
     "city": "Tel Aviv"
   },
   {
     "id": 2,
-    "name": "Sarah",
-    "age": 30,
-    "city": "Jerusalem"
+    "name": "David Cohen",
+    "age": 26,
+    "city": "Tel Aviv"
   },
   {
     "id": 3,
