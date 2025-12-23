@@ -77,17 +77,28 @@ app.post('/tasks', async (req, res) => {
 })
 
 // TODO: 6. PUT /tasks/:id - עדכון משימה
+app.put("/tasksUp/:id", async (req, res) => {
+    const intId = parseInt(req.params.id)
+    let taskToUpdate = TASK_DATA.find(task => task.id === intId)
+    taskToUpdate = {
+        title: req.body.title || taskToUpdate.title,
+        completed: req.body.completed || taskToUpdate.completed,
+        priority: req.body.priority || taskToUpdate.priority
+    }
+    await writeTasks(PATH, TASK_DATA)
+    res.status(200).json({msg:"user update succefully", data: taskToUpdate})
+})
 
 
 // TODO: 7. PATCH /tasks/:id/toggle - שינוי סטטוס completed
 
 
-app.delete("/tasks/:id", async (req, res) => {
+app.delete("/tasksD/:id", async (req, res) => {
     const intId = parseInt(req.params.id)
-    if(!isNaN(intId)) throw new Error ("Invalide id")
+    if(isNaN(intId)) throw new Error ("Invalide id")
     const taskToDelete = TASK_DATA.filter(task => task.id !== intId)
     await writeTasks(PATH, taskToDelete)
-    res.status(205).json({msg: "task deleted succefully"})
+    res.status(204).json({msg: "task deleted succefully", data: taskToDelete})
 })
 
 app.listen(PORT, () => {

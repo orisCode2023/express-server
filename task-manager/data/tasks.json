@@ -1,11 +1,5 @@
 [
   {
-    "id": 1,
-    "title": "Buy Milk",
-    "completed": false,
-    "priority": "high"
-  },
-  {
     "id": 2,
     "title": "Finish Exercises",
     "completed": false,
