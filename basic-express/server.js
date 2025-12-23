@@ -1,22 +1,30 @@
 import express from 'express'
 import fs from 'fs/promises'
+import path from 'path';
 
 const app = express();
 const PORT = 3000;
-const PATH = "./users.json"
-const USERS_DATA = await readJson(PATH)
+const PATH = "./users.json";
+const USERS_DATA = await readJson(PATH);
+
+
+// make the path realative from anywhere             
+//  const __dirname = path.resolve()
+// handele the path when the data in subfolder
+// const PATH2 = process.env.PATH2 || path.join(__dirname, "folder", "json file name.json");
 
 
 // use to convert the client body input into json
-app.use(express.json())
+// its name is body parser
+app.use(express.json());
 
 async function readJson(path) {
-    return JSON.parse(await fs.readFile(path, 'utf-8'))
-}
+    return JSON.parse(await fs.readFile(path, 'utf-8'));
+};
 
 async function writeJson(path, data){
-    await fs.writeFile(path, JSON.stringify(data, null, 2), 'utf-8')
-}
+    await fs.writeFile(path, JSON.stringify(data, null, 2), 'utf-8');
+};
 
 const getNextId = (users) => {
   if (!USERS_DATA || USERS_DATA.length === 0) {
@@ -37,7 +45,7 @@ app.get('/users', async (req, res) => {
         else res.status(200).json({ msg: "success", result: USERS_DATA });
     } catch (err) {
         console.error(err);
-}})
+}});
 
 app.get('/users/search', async (req, res) => {
     try {
@@ -48,7 +56,7 @@ app.get('/users/search', async (req, res) => {
     } catch (err) {
         console.error(err)
     }
-})
+});
 
 app.get('/users/:id', async (req, res) => {
     const id = parseInt(req.params.id);
@@ -67,9 +75,15 @@ app.post('/users', async (req, res) => {
     USERS_DATA.push(newUser) 
     await writeJson(PATH, USERS_DATA)
     res.status(201).json({msg: "new user was created succefully", data: newUser})
+});
+
+app.put('/users/:id', async (req, res) => {
+    const id = req.params.id
+    const foundUser = USERS_DATA.find(user => user.id === id)
+    foundUser["id"] = req.body.id
+    await writeJson(PATH, newUser)
+
 })
-
-
 
 
 
