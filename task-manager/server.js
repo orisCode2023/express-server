@@ -4,7 +4,7 @@ import fs from 'fs/promises';
 
 const app = express();
 const PORT = process.env.PORT || 3000
-const PATH = process.env.TODOS_PATH || "./data/tasks.json";
+const PATH = process.env.PATH || "./data/tasks.json";
 const TASK_DATA = await readTasks(PATH)
 
 app.use(express.json())
