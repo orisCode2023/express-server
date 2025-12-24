@@ -16,10 +16,28 @@ async function readUsers(path) {
     return JSON.parse(data);
 }
 
-
 async function writeUsers(path, tasks) {
     await fs.writeFile(path, JSON.stringify(tasks, null, 2));
 }
+
+app.get('/', (req, res) => {
+    res.status(200).json({ message: "Welcome to Auth API", endpoints: [...] })
+})
+
+app.post('/register', async (req, res) => {
+    const newUser = {
+        id: getNextId(),
+        username: req.body.username,
+        email: req.body.email,
+        password: req.body.password,
+        token: getToken()
+    }
+    DATA.push(newUser)
+    await writeUsers(PATH, DATA)
+    res.status(200).json({msg: "user sign in", data: newUser})
+
+})
+
 
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
